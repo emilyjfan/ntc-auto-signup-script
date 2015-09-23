@@ -4,12 +4,12 @@ require 'capybara/dsl'
 # YOUR NIKE.COM ACCOUNT INFO
 FIRST_NAME = 'Firstname'
 LAST_NAME = 'Lastname'
-EMAIL = 'email@example.com'
+EMAIL = 'example@example.com'
 PASSWORD = 'password'
 BIRTH_DAY = '01'
 BIRTH_MONTH = '01'
 BIRTH_YEAR = '1986'
-POSTAL_CODE = '1A2B3C'
+POSTAL_CODE = 'A1B2C3'
 COUNTRY = 'Canada' # must be Capitalized
 
 @session = Capybara::Session.new(:selenium)
@@ -127,34 +127,28 @@ end
 
 @session.visit(@events_url)
 
-# FIRST EVENT
-# enter the first event's <li> number below:
-first_event_li_num = 7
+# SIGN UP FOR EVENTS
+# enter events' <li> numbers below:
+event_li_nums = [4, 6]
 
-@session.find(:xpath, "//div[2]/section/article/div[1]/ul/li[#{first_event_li_num}]/dl/dd/ul[2]/li[2]/button[1]").click
-
-complete_sign_in_form
-
-complete_ntc_nrc_event_form
-# OR
-# complete_nrc_speed_run_event_form
-# OR
-# complete_nrc_home_local_run_event_form
-
-p "signed up for first event!"
-
-# SUBSEQUENT EVENTS
-# enter subsequent events' <li> numbers below:
-event_li_nums = [10, 12]
-
-event_li_nums.each do |event_li_num|
+event_li_nums.each_with_index do |event_li_num, index|
   @session.find(:xpath, "//div[2]/section/article/div[1]/ul/li[#{event_li_num}]/dl/dd/ul[2]/li[2]/button[1]").click
 
-  complete_ntc_nrc_event_form
-  # OR
-  # complete_nrc_speed_run_event_form
-  # OR
-  # complete_nrc_home_local_run_event_form
+  if index == 0
+    complete_sign_in_form
 
-  p "signed up for #{event_li_num}!"
+    # complete_ntc_nrc_event_form
+    # OR
+    # complete_nrc_speed_run_event_form
+    # OR
+    complete_nrc_home_local_run_event_form
+  else
+    complete_ntc_nrc_event_form
+    # OR
+    # complete_nrc_speed_run_event_form
+    # OR
+    # complete_nrc_home_local_run_event_form
+  end
+
+  p "Signed up for event number #{event_li_num}!"
 end
